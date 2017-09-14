@@ -503,6 +503,8 @@ Scene_Title.prototype.createCommandWindow = function() {
     this._commandWindow.setHandler('newGame',  this.commandNewGame.bind(this));
     this._commandWindow.setHandler('continue', this.commandContinue.bind(this));
     this._commandWindow.setHandler('options',  this.commandOptions.bind(this));
+	this._commandWindow.setHandler('help',  this.commandHelp.bind(this));
+	this._commandWindow.setHandler('about',  this.commandAbout.bind(this));
     this.addWindow(this._commandWindow);
 };
 
@@ -521,6 +523,16 @@ Scene_Title.prototype.commandContinue = function() {
 Scene_Title.prototype.commandOptions = function() {
     this._commandWindow.close();
     SceneManager.push(Scene_Options);
+};
+
+Scene_Title.prototype.commandHelp = function() {
+    this._commandWindow.close();
+    SceneManager.push(Scene_Help);
+};
+
+Scene_Title.prototype.commandAbout = function() {
+    this._commandWindow.close();
+    SceneManager.push(Scene_About);
 };
 
 Scene_Title.prototype.playTitleMusic = function() {
@@ -2686,4 +2698,75 @@ Scene_Gameover.prototype.isTriggered = function() {
 
 Scene_Gameover.prototype.gotoTitle = function() {
     SceneManager.goto(Scene_Title);
+};
+
+
+//-----------------------------------------------------------------------------
+// Scene_Help
+//
+// The scene class of the help screen.tyy
+
+function Scene_Help() {
+    this.initialize.apply(this, arguments);
+}
+
+Scene_Help.prototype = Object.create(Scene_MenuBase.prototype);
+Scene_Help.prototype.constructor = Scene_Help;
+
+Scene_Help.prototype.initialize = function() {
+    Scene_MenuBase.prototype.initialize.call(this);
+};
+
+Scene_Help.prototype.create = function() {
+    Scene_MenuBase.prototype.create.call(this);
+    this.createHelpWindow();
+};
+
+Scene_Help.prototype.terminate = function() {
+    Scene_MenuBase.prototype.terminate.call(this);
+    ConfigManager.save();
+};
+
+Scene_Help.prototype.createHelpWindow = function() {
+    var width = Graphics.width;
+    var height = Graphics.height;
+    this._myHelpWindow = new Window_MyHelp(50, 50, width - 100, height - 100);
+    this._myHelpWindow.setHandler('cancel', this.popScene.bind(this));
+    this._myHelpWindow.refresh();
+    this.addWindow(this._myHelpWindow);
+};
+
+//-----------------------------------------------------------------------------
+// Scene_About
+//
+// The scene class of the about screen.tyy
+
+function Scene_About() {
+    this.initialize.apply(this, arguments);
+}
+
+Scene_About.prototype = Object.create(Scene_MenuBase.prototype);
+Scene_About.prototype.constructor = Scene_About;
+
+Scene_About.prototype.initialize = function() {
+    Scene_MenuBase.prototype.initialize.call(this);
+};
+
+Scene_About.prototype.create = function() {
+    Scene_MenuBase.prototype.create.call(this);
+    this.createHelpWindow();
+};
+
+Scene_About.prototype.terminate = function() {
+    Scene_MenuBase.prototype.terminate.call(this);
+    ConfigManager.save();
+};
+
+Scene_About.prototype.createHelpWindow = function() {
+    var width = Graphics.width;
+    var height = Graphics.height;
+    this._myAboutWindow = new Window_About(50, 50, width - 100, height - 100);
+    this._myAboutWindow.setHandler('cancel', this.popScene.bind(this));
+    this._myAboutWindow.refresh();
+    this.addWindow(this._myAboutWindow);
 };

@@ -5755,6 +5755,8 @@ Window_TitleCommand.prototype.makeCommandList = function() {
     this.addCommand(TextManager.newGame,   'newGame');
     this.addCommand(TextManager.continue_, 'continue', this.isContinueEnabled());
     this.addCommand(TextManager.options,   'options');
+	this.addCommand('帮助',   'help');
+	this.addCommand('关于',   'about');
 };
 
 Window_TitleCommand.prototype.isContinueEnabled = function() {
@@ -6025,4 +6027,113 @@ Window_DebugEdit.prototype.updateVariable = function() {
             this.redrawCurrentItem();
         }
     }
+};
+
+
+//-----------------------------------------------------------------------------
+// Window_MyHelp
+//
+// The window for displaying help information.tyy
+
+function Window_MyHelp() {
+    this.initialize.apply(this, arguments);
+}
+
+Window_MyHelp.prototype = Object.create(Window_Selectable.prototype);
+Window_MyHelp.prototype.constructor = Window_MyHelp;
+
+Window_MyHelp.prototype.initialize = function(x, y, width, height) {
+    this._textList = ['                   游戏帮助\n控制：\n    1.键盘：方向键控制移动，按住shift加速移动\n，空格或者回车进行对话和确认。\n    2.鼠标：点击地图块进行移动，点击人物进行\n对话。\n\n游戏玩法：\n    通过与各种生物对话来推动游戏剧情发展，游\n戏中可按Esc键调出菜单存档。\n\n\n                 Esc键退出'];
+    this._textIndex = 0;
+    Window_Selectable.prototype.initialize.call(this, x, y, width, height);
+    this.activate();
+};
+
+Window_MyHelp.prototype.refresh = function() {
+    this.createContents();
+    Window_Selectable.prototype.refresh.call(this);
+    this.drawTextEx(this._textList[this._textIndex], 25, 25);
+};
+
+Window_MyHelp.prototype.processCursorMove = function() {
+    if (Input.isRepeated('left') || Input.isRepeated('up')) {
+        this.showPrePage();
+    }
+    if (Input.isRepeated('right') || Input.isRepeated('down')) {
+        this.showNextPage();
+    }
+};
+
+Window_MyHelp.prototype.showNextPage = function(){
+    if(this._textIndex >= this._textList.length - 1){
+        this._textIndex = this._textList.length - 1;
+    }
+    else{
+        this._textIndex++;
+    }
+    this.refresh();
+};
+
+Window_MyHelp.prototype.showPrePage = function() {
+    if(this._textIndex <= 0){
+        this._textIndex = 0;
+    }
+    else {
+        this._textIndex--;
+    }
+    this.refresh();
+};
+
+//-----------------------------------------------------------------------------
+// Window_About
+//
+// The window for displaying about information.tyy
+
+function Window_About() {
+    this.initialize.apply(this, arguments);
+}
+
+Window_About.prototype = Object.create(Window_Selectable.prototype);
+Window_About.prototype.constructor = Window_About;
+
+Window_About.prototype.initialize = function(x, y, width, height) {
+    this._textList = ['                关于游戏与我们\n    本游戏纯属虚构，一切人物故事都是yy出来的，\n绝不雷同，请放心食用。\n\n    游戏制作纯属兴趣，感谢以下小伙伴们两个月来\n付出的辛勤劳动：\n    Levante\n    鱼眼\n    手越啊单\n\n\n\n        Esc键退出    左/右方向键翻页', '安利一波：\n    有想法？有雄心？想获取游戏的更多信息？想\n知道交大的更多小秘密？那就赶紧关注我们的公众\n号吧！搜索一下“第三基地”就可以关注我们啦~\n\n版权声明：\n    本游戏纯属兴趣制作，严禁商用。\n    本游戏所用图像素材大多取自 RPGmaker MV 正\n版本体和DLC自带素材，少数是由我们的小伙伴亲手\n操刀。音乐部分部分纯音乐来源于网络，如有侵权请\n联系我们（632149665@qq.com），定将及时删除。\n\n        Esc键退出    左/右方向键翻页'];
+    this._textIndex = 0;
+    Window_Selectable.prototype.initialize.call(this, x, y, width, height);
+    this.activate();
+};
+
+Window_About.prototype.refresh = function() {
+    this.createContents();
+    Window_Selectable.prototype.refresh.call(this);
+    this.drawTextEx(this._textList[this._textIndex], 25, 25);
+};
+
+Window_About.prototype.processCursorMove = function() {
+    if (Input.isRepeated('left') || Input.isRepeated('up')) {
+        this.showPrePage();
+    }
+    if (Input.isRepeated('right') || Input.isRepeated('down')) {
+        this.showNextPage();
+    }
+};
+
+Window_About.prototype.showNextPage = function(){
+    if(this._textIndex >= this._textList.length - 1){
+        this._textIndex = this._textList.length - 1;
+    }
+    else{
+        this._textIndex++;
+    }
+    this.refresh();
+};
+
+Window_About.prototype.showPrePage = function() {
+    if(this._textIndex <= 0){
+        this._textIndex = 0;
+    }
+    else {
+        this._textIndex--;
+    }
+    this.refresh();
 };
